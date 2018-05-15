@@ -279,6 +279,11 @@ class EKContentView: UIView {
     
     // Animate out
     func animateOut(pushOut: Bool) {
+        
+        if attributes.position.isKeyboard {
+            endEditing(true)
+        }
+        
         outDispatchWorkItem?.cancel()
         entryDelegate?.changeToInactive(withAttributes: attributes)
         
@@ -475,9 +480,9 @@ extension EKContentView {
         guard let keyboardAtts = KeyboardAttributes(withRawValue: userInfo) else {
             return
         }
-        let offset = entrance ? -keyboardAtts.height : inOffset
+        let offset = inOffset + (entrance ? -keyboardAtts.height : 0)
         UIView.animate(withDuration: keyboardAtts.duration, delay: 0, options: keyboardAtts.curve, animations: {
-            self.inConstraint.constant = offset
+            self.inConstraint?.constant = offset
             self.superview?.layoutIfNeeded()
         }, completion: nil)
     }

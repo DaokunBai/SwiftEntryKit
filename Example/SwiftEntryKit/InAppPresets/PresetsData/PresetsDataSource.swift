@@ -365,14 +365,17 @@ struct PresetsDataSource {
         
         
         // Preset II
-        attributes = .bottomNote
+        attributes = .bottomFloat
+        attributes.windowLevel = .normal
         attributes.position = .keyboard
         attributes.hapticFeedbackType = .success
         attributes.displayDuration = .infinity
         attributes.entryInteraction = .absorbTouches
-        attributes.entryBackground = .gradient(gradient: .init(colors: [EKColor.BlueGradient.dark, EKColor.BlueGradient.light], startPoint: .zero, endPoint: CGPoint(x: 1, y: 1)))
-        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
-        attributes.statusBarStyle = .default
+        attributes.screenInteraction = .dismiss
+        attributes.entryBackground = .visualEffect(style: .extraLight)
+        attributes.screenBackground = .color(color: .dimmedLightBackground)
+        attributes.scroll = .enabled(swipeable: false, pullbackAnimation: .jolt)
+        attributes.statusBarStyle = .lightContent
         attributes.positionConstraints.maxSize = .init(width: .constant(value: UIScreen.main.minEdge), height: .intrinsic)
         descriptionString = "Bottom float with gradient background. Touches delay exit"
         descriptionThumb = ThumbDesc.bottomFloat.rawValue
