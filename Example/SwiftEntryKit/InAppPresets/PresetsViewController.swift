@@ -232,6 +232,10 @@ class PresetsViewController: UIViewController {
     private func showCustomNibView(attributes: EKAttributes) {
         SwiftEntryKit.display(entry: NibExampleView(), using: attributes)
     }
+    
+    private func showFormView(attributes: EKAttributes) {
+        SwiftEntryKit.display(entry: EKFormView(), using: attributes)
+    }
 }
 
 // MARK: UITableViewDelegate, UITableViewDataSource
@@ -358,6 +362,8 @@ extension PresetsViewController {
         switch row {
         case 0:
             showCustomNibView(attributes: attributes)
+        case 1:
+            showFormView(attributes: attributes)
         default:
             break
         }

@@ -22,6 +22,12 @@ public extension EKAttributes {
         /** The entry appears at the center of the screen. */
         case center
         
+        case keyboard
+        
+        public var isKeyboard: Bool {
+            return self == .keyboard
+        }
+        
         public var isTop: Bool {
             return self == .top
         }

@@ -40,6 +40,8 @@ class EKContentView: UIView {
     
     private var outDispatchWorkItem: DispatchWorkItem!
 
+    private var keyboardState = KeyboardState.hidden
+    
     // Data source
     private var attributes: EKAttributes!
     
@@ -79,6 +81,8 @@ class EKContentView: UIView {
         
         // Generate haptic feedback
         generateHapticFeedback()
+        
+        setupKeyboardChangeIfNeeded()
     }
     
     // Setup the scrollView initial position
@@ -119,7 +123,7 @@ class EKContentView: UIView {
             outOffset = -safeAreaInsets.top
             
             spacerView?.layout(.bottom, to: .top, of: self)
-        case .bottom:
+        case .bottom, .keyboard:
             screenOutAnchor = .bottom
             messageOutAnchor = .top
             messageInAnchor = .bottom
@@ -165,7 +169,7 @@ class EKContentView: UIView {
         switch attributes.position {
         case .top:
             verticalLimit = inOffset
-        case .bottom, .center:
+        case .bottom, .center, .keyboard:
             verticalLimit = UIScreen.main.bounds.height + inOffset
         }
     }
@@ -411,6 +415,93 @@ class EKContentView: UIView {
             EKWindowProvider.shared.state = .main
         }
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: Responds to keyboard
+extension EKContentView {
+    
+    private enum KeyboardState {
+        case visible
+        case hidden
+        
+        var isVisible: Bool {
+            return self == .visible
+        }
+        
+        var isHidden: Bool {
+            return self == .hidden
+        }
+    }
+    
+    private struct KeyboardAttributes {
+        let duration: TimeInterval
+        let curve: UIViewAnimationOptions
+        let begin: CGRect
+        let end: CGRect
+        
+        init?(withRawValue rawValue: [AnyHashable: Any]?) {
+            guard let rawValue = rawValue else {
+                return nil
+            }
+            duration = rawValue[UIKeyboardAnimationDurationUserInfoKey] as! TimeInterval
+            curve = UIViewAnimationOptions(rawValue: rawValue[UIKeyboardAnimationCurveUserInfoKey] as! UInt)
+            begin = (rawValue[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+            end = (rawValue[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        }
+        
+        var height: CGFloat {
+            return end.maxY - end.minY
+        }
+    }
+    
+    private func setupKeyboardChangeIfNeeded() {
+        guard attributes.position.isKeyboard else {
+            return
+        }
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardDidShow(_:)), name: .UIKeyboardDidShow, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardDidHide(_:)), name: .UIKeyboardDidHide, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: .UIKeyboardWillChangeFrame, object: nil)
+    }
+
+    private func animate(by userInfo: [AnyHashable: Any]?, entrance: Bool) {
+        guard let keyboardAtts = KeyboardAttributes(withRawValue: userInfo) else {
+            return
+        }
+        let offset = entrance ? -keyboardAtts.height : inOffset
+        UIView.animate(withDuration: keyboardAtts.duration, delay: 0, options: keyboardAtts.curve, animations: {
+            self.inConstraint.constant = offset
+            self.superview?.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        keyboardState = .visible
+        animate(by: notification.userInfo, entrance: true)
+    }
+    
+    @objc func keyboardDidShow(_ notification: Notification) {
+        
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        animate(by: notification.userInfo, entrance: false)
+    }
+    
+    @objc func keyboardDidHide(_ notification: Notification) {
+        keyboardState = .hidden
+    }
+    
+    @objc func keyboardWillChangeFrame(_ notification: Notification) {
+        animate(by: notification.userInfo, entrance: true)
+    }
 }
 
 // MARK: Responds to user interactions (tap / pan / swipe / touches)
@@ -431,6 +522,9 @@ extension EKContentView {
     
     // Pan gesture handler
     @objc func panGestureRecognized(gr: UIPanGestureRecognizer) {
+        guard keyboardState.isHidden else {
+            return
+        }
         
         // Delay the exit of the entry if needed
         handleExitDelayIfNeeded(byPanState: gr.state)
@@ -450,7 +544,6 @@ extension EKContentView {
                 }
             }
         } else {
-            
             switch gr.state {
             case .ended, .failed, .cancelled:
                 let velocity = gr.velocity(in: superview!).y

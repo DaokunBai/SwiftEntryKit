@@ -363,6 +363,22 @@ struct PresetsDataSource {
         description = .init(with: attributes, title: "View From Nib", description: descriptionString, thumb: descriptionThumb)
         presets.append(description)
         
+        
+        // Preset II
+        attributes = .bottomNote
+        attributes.position = .keyboard
+        attributes.hapticFeedbackType = .success
+        attributes.displayDuration = .infinity
+        attributes.entryInteraction = .absorbTouches
+        attributes.entryBackground = .gradient(gradient: .init(colors: [EKColor.BlueGradient.dark, EKColor.BlueGradient.light], startPoint: .zero, endPoint: CGPoint(x: 1, y: 1)))
+        attributes.scroll = .enabled(swipeable: true, pullbackAnimation: .jolt)
+        attributes.statusBarStyle = .default
+        attributes.positionConstraints.maxSize = .init(width: .constant(value: UIScreen.main.minEdge), height: .intrinsic)
+        descriptionString = "Bottom float with gradient background. Touches delay exit"
+        descriptionThumb = ThumbDesc.bottomFloat.rawValue
+        description = .init(with: attributes, title: "Bottom", description: descriptionString, thumb: descriptionThumb)
+        presets.append(description)
+                
         dataSource.append(("Custom", presets))
     }
     

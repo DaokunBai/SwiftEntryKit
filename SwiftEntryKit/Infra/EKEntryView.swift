@@ -105,7 +105,7 @@ class EKEntryView: EKStyleView {
             switch attributes.position {
             case .top:
                 topInset = -EKWindowProvider.safeAreaInsets.top
-            case .bottom, .center:
+            case .bottom, .center, .keyboard:
                 bottomInset = EKWindowProvider.safeAreaInsets.bottom
             }
             
