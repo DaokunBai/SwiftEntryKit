@@ -234,7 +234,28 @@ class PresetsViewController: UIViewController {
     }
     
     private func showFormView(attributes: EKAttributes) {
-        SwiftEntryKit.display(entry: EKFormView(), using: attributes)
+        let title = EKProperty.LabelContent(text: "Sign In", style: .init(font: MainFont.medium.with(size: 16), color: EKColor.Gray.a800))
+        
+        var textFieldsContent: [EKProperty.TextFieldContent] = []
+        
+        let placeholderStyle = EKProperty.Label(font: MainFont.light.with(size: 14), color: UIColor(white: 0.5, alpha: 1))
+        let textStyle = EKProperty.Label(font: MainFont.light.with(size: 14), color: .black)
+        let separatorColor = UIColor(white: 0.8784, alpha: 1)
+        
+        let emailPlaceholder = EKProperty.LabelContent(text: "User Name", style: placeholderStyle)
+        let emailTextField = EKProperty.TextFieldContent(keyboardType: .emailAddress, placeholder: emailPlaceholder, textStyle: textStyle, leadingImage: UIImage(named: "user"), bottomBorderColor: separatorColor)
+        textFieldsContent.append(emailTextField)
+        
+        let passwordPlaceholder = EKProperty.LabelContent(text: "Password", style: placeholderStyle)
+        let passwordTextField = EKProperty.TextFieldContent(keyboardType: .default, placeholder: passwordPlaceholder, textStyle: textStyle, isSecure: true, leadingImage: UIImage(named: "lock"), bottomBorderColor: separatorColor)
+        textFieldsContent.append(passwordTextField)
+        
+        let button = EKProperty.ButtonContent(label: .init(text: "Continue", style: .init(font: MainFont.bold.with(size: 16), color: .white)), backgroundColor: .redish) {
+            SwiftEntryKit.dismiss()
+        }
+
+        let contentView = EKFormView(with: title, textFieldsContent: textFieldsContent, buttonContent: button)
+        SwiftEntryKit.display(entry: contentView, using: attributes)
     }
 }
 

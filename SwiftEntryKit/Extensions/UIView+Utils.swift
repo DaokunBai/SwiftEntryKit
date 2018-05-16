@@ -74,3 +74,19 @@ extension UIImageView {
         }
     }
 }
+
+extension UITextField {
+    var textFieldContent: EKProperty.TextFieldContent {
+        set {
+            attributedPlaceholder = NSAttributedString(string: newValue.placeholder.text, attributes: [.font: newValue.placeholder.style.font, .foregroundColor: newValue.placeholder.style.color])
+            keyboardType = newValue.keyboardType
+            textColor = newValue.textStyle.color
+            font = newValue.textStyle.font
+            textAlignment = newValue.textStyle.alignment
+            isSecureTextEntry = newValue.isSecure
+        }
+        get {
+            fatalError("textFieldContent doesn't have a getter")
+        }
+    }
+}

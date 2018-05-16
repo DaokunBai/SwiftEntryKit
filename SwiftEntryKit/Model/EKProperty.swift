@@ -102,6 +102,25 @@ public struct EKProperty {
         }
     }
     
+    /** Text field content **/
+    public struct TextFieldContent {
+        public var keyboardType: UIKeyboardType
+        public var isSecure: Bool
+        public var leadingImage: UIImage!
+        public var placeholder: LabelContent
+        public var textStyle: Label
+        public var bottomBorderColor: UIColor
+        
+        public init(keyboardType: UIKeyboardType = .default, placeholder: LabelContent, textStyle: Label, isSecure: Bool = false, leadingImage: UIImage? = nil, bottomBorderColor: UIColor = .clear) {
+            self.keyboardType = keyboardType
+            self.placeholder = placeholder
+            self.textStyle = textStyle
+            self.isSecure = isSecure
+            self.leadingImage = leadingImage
+            self.bottomBorderColor = bottomBorderColor
+        }
+    }
+    
     /** Button bar content */
     public struct ButtonBarContent {
         

@@ -16,7 +16,8 @@
 		0EC6A6869903E405525BED5A0A46E4EC /* EKAttributes+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD5703577ED60FBA848ED3697453756C /* EKAttributes+Animation.swift */; };
 		0EDCC39E7CFF90FBD70BB2D8BD8AD799 /* EKAttributes+Count.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E147CD4948A231B91B954D41CAD64C /* EKAttributes+Count.swift */; };
 		101AAF8CA9827DCBCFB8FE2C0F777AA2 /* QuickTestSuite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC4E5224CC194C6A5B45F1B1E97C890 /* QuickTestSuite.swift */; };
-		14D2046D20AB5377006D2BC0 /* EKFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D2046C20AB5377006D2BC0 /* EKFormView.swift */; };
+		14D2046D20AB5377006D2BC0 /* EKFormMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D2046C20AB5377006D2BC0 /* EKFormMessageView.swift */; };
+		14FBF2B420ACB07B0094B6D6 /* EKTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FBF2B320ACB07B0094B6D6 /* EKTextField.swift */; };
 		16409C737271C4F1D7FEEFB91E317D5A /* CwlPreconditionTesting.h in Headers */ = {isa = PBXBuildFile; fileRef = A6E0636717748F2C71846C07FFBB7B59 /* CwlPreconditionTesting.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		17C8EE7DF3F57C8F99EAF63C6E61EA99 /* FailureMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070185C184EED9BD9F2F036CB810A9AA /* FailureMessage.swift */; settings = {COMPILER_FLAGS = "-DPRODUCT_NAME=Nimble/Nimble"; }; };
 		194CE3CF51F07B014A063F16C1870E29 /* QLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E561B93BBB063C03439DC4AFEBD82D4 /* QLUtils.swift */; };
@@ -252,7 +253,8 @@
 		0FE2F2DCBF282F4CA9F49F668A96F53C /* QuickLayout-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "QuickLayout-dummy.m"; sourceTree = "<group>"; };
 		1084026AE9B59F2773078AE230965FA5 /* Expression.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Expression.swift; path = Sources/Nimble/Expression.swift; sourceTree = "<group>"; };
 		127A0378BC529DA954A7A799F6129359 /* HaveCount.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HaveCount.swift; path = Sources/Nimble/Matchers/HaveCount.swift; sourceTree = "<group>"; };
-		14D2046C20AB5377006D2BC0 /* EKFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKFormView.swift; sourceTree = "<group>"; };
+		14D2046C20AB5377006D2BC0 /* EKFormMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKFormMessageView.swift; sourceTree = "<group>"; };
+		14FBF2B320ACB07B0094B6D6 /* EKTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EKTextField.swift; sourceTree = "<group>"; };
 		17F2D0AC84014CD6BFEFD504AB353F81 /* SwiftEntryKit.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SwiftEntryKit.swift; path = SwiftEntryKit/SwiftEntryKit.swift; sourceTree = "<group>"; };
 		192E5419FD6190C95023769874FC82F8 /* Callsite.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Callsite.swift; path = Sources/Quick/Callsite.swift; sourceTree = "<group>"; };
 		195234B16820F704D332AEF66FD436E7 /* World+DSL.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "World+DSL.h"; path = "Sources/QuickObjectiveC/DSL/World+DSL.h"; sourceTree = "<group>"; };
@@ -532,6 +534,15 @@
 			);
 			name = Infra;
 			path = SwiftEntryKit/Infra;
+			sourceTree = "<group>";
+		};
+		14FBF2B220ACB0590094B6D6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				2D4B32277B3939CFF55779E9F32522BD /* EKButtonBarView.swift */,
+				14FBF2B320ACB07B0094B6D6 /* EKTextField.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		20460157762D625F02BA186805FC9C2F /* Support Files */ = {
@@ -898,9 +909,9 @@
 		F6E92A2D1B8130DEE26E531AF7742BF8 /* MessageViews */ = {
 			isa = PBXGroup;
 			children = (
-				14D2046C20AB5377006D2BC0 /* EKFormView.swift */,
+				14FBF2B220ACB0590094B6D6 /* Utils */,
+				14D2046C20AB5377006D2BC0 /* EKFormMessageView.swift */,
 				754E9328E3EF593D4A79E3ACAC2AB017 /* EKAlertMessageView.swift */,
-				2D4B32277B3939CFF55779E9F32522BD /* EKButtonBarView.swift */,
 				8D4A5B13AADB272544E3602A0995148C /* EKMessageContentView.swift */,
 				4FD90DB3BFA97DA9F473B9605AC3E877 /* EKNotificationMessageView.swift */,
 				72983D00388C1E0A417526920038BB9C /* EKPopUpMessageView.swift */,
@@ -1153,6 +1164,7 @@
 				0EC6A6869903E405525BED5A0A46E4EC /* EKAttributes+Animation.swift in Sources */,
 				86274B67BA55C3605491C1921DA536B3 /* EKAttributes+BackgroundStyle.swift in Sources */,
 				0EDCC39E7CFF90FBD70BB2D8BD8AD799 /* EKAttributes+Count.swift in Sources */,
+				14FBF2B420ACB07B0094B6D6 /* EKTextField.swift in Sources */,
 				2BDD29F24903984F43CBF0F0A27939A2 /* EKAttributes+DisplayPriority.swift in Sources */,
 				B3BE73D049B8104C2DA05894C36B9794 /* EKAttributes+Duration.swift in Sources */,
 				266CB38029A0D167B45C135218C26981 /* EKAttributes+FrameStyle.swift in Sources */,
@@ -1167,7 +1179,7 @@
 				50027D450ED10512FE0052BBABFB5041 /* EKAttributes+WindowLevel.swift in Sources */,
 				950C0D6B2C0C25700DA85AFEBC5C7D89 /* EKAttributes.swift in Sources */,
 				0392AD2428F9DE5E18EC5143F26AFF95 /* EKBackgroundView.swift in Sources */,
-				14D2046D20AB5377006D2BC0 /* EKFormView.swift in Sources */,
+				14D2046D20AB5377006D2BC0 /* EKFormMessageView.swift in Sources */,
 				3450663AB76096EBDF0DC33C06033BAB /* EKButtonBarView.swift in Sources */,
 				C944B1F89A7B1B9F0420C7344A10A811 /* EKContentView.swift in Sources */,
 				D6EDFEBC32FA0506382BCABCA61D2617 /* EKEntryView.swift in Sources */,
