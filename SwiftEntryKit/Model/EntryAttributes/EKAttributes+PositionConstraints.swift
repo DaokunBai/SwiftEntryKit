@@ -71,11 +71,39 @@ public extension EKAttributes {
             case intrinsic
         }
         
+        public enum KeyboardBehavior {
+            
+            /** Bind the entry's bottom to the keyboard's top, with offset */
+            case bind(offset: CGFloat)
+            
+            /** Entry is is statis while keyboard shows  */
+            case unbind
+            
+            public var isBound: Bool {
+                switch self {
+                case .bind(offset: _):
+                    return true
+                case .unbind:
+                    return false
+                }
+            }
+        }
+        
+        /** The entry can be bound to keyboard in case of appearence */
+        public var keyboardBehavior = KeyboardBehavior.bind(offset: 0)
+        
         /** The size of the entry */
         public var size: Size
         
         /** The maximum size of the entry */
         public var maxSize: Size
+        
+        /**
+         The opposite side can have a resistance offset which the entry isn't able to cross
+         It is mostly used when the device orientation changes and the entry's frame crosses the screen bounds.
+         Current isn't supported with center entry position.
+         */
+        public var resistanceOffset: CGFloat = 0
         
         /** The vertical offset from the top or bottom anchor */
         public var verticalOffset: CGFloat

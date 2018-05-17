@@ -18,7 +18,7 @@ public class EKFormMessageView: UIView {
     // MARK: Setup
     public init(with title: EKProperty.LabelContent, textFieldsContent: [EKProperty.TextFieldContent], buttonContent: EKProperty.ButtonContent) {
         super.init(frame: UIScreen.main.bounds)
-        set(.height, of: 280, priority: .must)
+        set(.height, of: 280, priority: .defaultHigh)
         setupScrollView()
         setupTitleLabel(with: title)
         setupTextFields(with: textFieldsContent)

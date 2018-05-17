@@ -32,6 +32,7 @@ class EKContentView: UIView {
     private var popOutConstraint: NSLayoutConstraint!
     private var inConstraint: NSLayoutConstraint!
     private var outConstraint: NSLayoutConstraint!
+    private var resistanceConstraint: NSLayoutConstraint!
     
     private var inOffset: CGFloat = 0
     private var totalTranslation: CGFloat = 0
@@ -123,7 +124,7 @@ class EKContentView: UIView {
             outOffset = -safeAreaInsets.top
             
             spacerView?.layout(.bottom, to: .top, of: self)
-        case .bottom, .keyboard:
+        case .bottom:
             screenOutAnchor = .bottom
             messageOutAnchor = .top
             messageInAnchor = .bottom
@@ -169,8 +170,19 @@ class EKContentView: UIView {
         switch attributes.position {
         case .top:
             verticalLimit = inOffset
-        case .bottom, .center, .keyboard:
+        case .bottom, .center:
             verticalLimit = UIScreen.main.bounds.height + inOffset
+        }
+        
+        // Resistance offset
+        let resistanceOffset = attributes.positionConstraints.resistanceOffset
+        switch attributes.position {
+        case .top:
+            resistanceConstraint = layoutToSuperview(.bottom, relation: .lessThanOrEqual, offset: -resistanceOffset)
+        case .bottom:
+            resistanceConstraint = layoutToSuperview(.top, relation: .greaterThanOrEqual, offset: resistanceOffset)
+        default:
+            break
         }
     }
     
@@ -279,8 +291,7 @@ class EKContentView: UIView {
     
     // Animate out
     func animateOut(pushOut: Bool) {
-        
-        if attributes.position.isKeyboard {
+        if attributes.positionConstraints.keyboardBehavior.isBound {
             endEditing(true)
         }
         
@@ -426,6 +437,7 @@ class EKContentView: UIView {
     }
 }
 
+
 // MARK: Responds to keyboard
 extension EKContentView {
     
@@ -464,7 +476,7 @@ extension EKContentView {
     }
     
     private func setupKeyboardChangeIfNeeded() {
-        guard attributes.position.isKeyboard else {
+        guard attributes.positionConstraints.keyboardBehavior.isBound else {
             return
         }
         
@@ -480,7 +492,19 @@ extension EKContentView {
         guard let keyboardAtts = KeyboardAttributes(withRawValue: userInfo) else {
             return
         }
-        let offset = inOffset + (entrance ? -keyboardAtts.height : 0)
+        var offset = entrance ? -keyboardAtts.height : 0
+        if entrance {
+            offset = -keyboardAtts.height
+            switch attributes.positionConstraints.keyboardBehavior {
+            case .bind(offset: let value):
+                offset -= value
+            case .unbind:
+                offset = 0
+            }
+        } else {
+           offset = inOffset
+        }
+        
         UIView.animate(withDuration: keyboardAtts.duration, delay: 0, options: keyboardAtts.curve, animations: {
             self.inConstraint?.constant = offset
             self.superview?.layoutIfNeeded()
@@ -488,6 +512,9 @@ extension EKContentView {
     }
     
     @objc func keyboardWillShow(_ notification: Notification) {
+        guard containsFirstResponder else {
+            return
+        }
         keyboardState = .visible
         animate(by: notification.userInfo, entrance: true)
     }
@@ -505,6 +532,9 @@ extension EKContentView {
     }
     
     @objc func keyboardWillChangeFrame(_ notification: Notification) {
+        guard containsFirstResponder else {
+            return
+        }
         animate(by: notification.userInfo, entrance: true)
     }
 }

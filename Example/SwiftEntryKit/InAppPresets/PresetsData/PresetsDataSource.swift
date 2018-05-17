@@ -365,15 +365,19 @@ struct PresetsDataSource {
         
         
         // Preset II
-        attributes = .bottomFloat
+        attributes = .float
         attributes.windowLevel = .normal
-        attributes.position = .keyboard
-        attributes.hapticFeedbackType = .success
+        attributes.position = .bottom
         attributes.displayDuration = .infinity
+        
+        attributes.entranceAnimation = .init(translate: .init(duration: 0.5, spring: .init(damping: 0.8, initialVelocity: 0)))
+        attributes.exitAnimation = .init(translate: .init(duration: 0.5, spring: .init(damping: 0.8, initialVelocity: 0)))
+        attributes.popBehavior = .animated(animation: .init(translate: .init(duration: 0.5, spring: .init(damping: 0.8, initialVelocity: 0))))
+        
         attributes.entryInteraction = .absorbTouches
         attributes.screenInteraction = .dismiss
         attributes.entryBackground = .visualEffect(style: .extraLight)
-        attributes.screenBackground = .color(color: .dimmedLightBackground)
+        attributes.screenBackground = .color(color: .dimmedDarkBackground)
         attributes.scroll = .enabled(swipeable: false, pullbackAnimation: .jolt)
         attributes.statusBarStyle = .lightContent
         attributes.positionConstraints.maxSize = .init(width: .constant(value: UIScreen.main.minEdge), height: .intrinsic)
