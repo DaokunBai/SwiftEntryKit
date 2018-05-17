@@ -10,13 +10,13 @@ import UIKit
 import QuickLayout
 
 extension UILabel {
-    var attributes: EKProperty.Label {
+    var attributes: EKProperty.LabelStyle {
         set {
             font = newValue.font
             textColor = newValue.color
         }
         get {
-            return EKProperty.Label(font: font, color: textColor, alignment: textAlignment)
+            return EKProperty.LabelStyle(font: font, color: textColor, alignment: textAlignment)
         }
     }
     
@@ -28,7 +28,7 @@ extension UILabel {
             textAlignment = newValue.style.alignment
         }
         get {
-            return EKProperty.LabelContent(text: text ?? "", style: EKProperty.Label(font: font, color: textColor, alignment: textAlignment))
+            return EKProperty.LabelContent(text: text ?? "", style: EKProperty.LabelStyle(font: font, color: textColor, alignment: textAlignment))
         }
     }
 }
@@ -42,9 +42,7 @@ extension UIButton {
             backgroundColor = newValue.backgroundColor
         }
         get {
-            let text = title(for: .normal)
-            let color = titleColor(for: .normal)!
-            return EKProperty.ButtonContent(label: EKProperty.LabelContent(text: text!, style: EKProperty.Label(font: titleLabel!.font, color: color, alignment: titleLabel!.textAlignment)), backgroundColor: backgroundColor!)
+            fatalError("buttonContent doesn't have a getter")
         }
     }
 }
