@@ -71,12 +71,36 @@ public extension EKAttributes {
             case intrinsic
         }
         
-        public enum KeyboardBehavior {
+        /** The relation to the keyboard's top and the screen's top while it is opened */
+        public enum KeyboardRelation {
             
-            /** Bind the entry's bottom to the keyboard's top, with offset */
-            case bind(offset: CGFloat)
+            /** Describes the offset when the keyboard is opened */
+            public struct Offset {
+                
+                /** Describes top keyboard offset to the entry's bottom */
+                public var bottom: CGFloat
+                
+                /** Describes top screen offset to the entry's top, useful to prevent the entry from exceeding the screen top bounds */
+                public var screenEdgeResistance: CGFloat?
+                
+                public init(bottom: CGFloat = 0, screenEdgeResistance: CGFloat? = 10) {
+                    self.bottom = bottom
+                    self.screenEdgeResistance = screenEdgeResistance
+                }
+                
+                /** None offset */
+                public static var none: Offset {
+                    return .init()
+                }
+            }
             
-            /** Entry is is statis while keyboard shows  */
+            /** Bind the entry's bottom to the keyboard's top with an offset.
+             Additionally, the top edge of the screen can have a resistance offset which the entry isn't able to cross.
+             The resistance is mostly used when the device orientation changes and the entry's frame crosses the screen bounds.
+             Current isn't supported with center entry position.*/
+            case bind(offset: Offset)
+            
+            /** Entry is unbound to the keyboard. It's location doesn't change. */
             case unbind
             
             public var isBound: Bool {
@@ -90,21 +114,14 @@ public extension EKAttributes {
         }
         
         /** The entry can be bound to keyboard in case of appearence */
-        public var keyboardBehavior = KeyboardBehavior.bind(offset: 0)
+        public var keyboardRelation = KeyboardRelation.bind(offset: .none)
         
         /** The size of the entry */
         public var size: Size
         
         /** The maximum size of the entry */
         public var maxSize: Size
-        
-        /**
-         The opposite side can have a resistance offset which the entry isn't able to cross
-         It is mostly used when the device orientation changes and the entry's frame crosses the screen bounds.
-         Current isn't supported with center entry position.
-         */
-        public var resistanceOffset: CGFloat = 0
-        
+
         /** The vertical offset from the top or bottom anchor */
         public var verticalOffset: CGFloat
         

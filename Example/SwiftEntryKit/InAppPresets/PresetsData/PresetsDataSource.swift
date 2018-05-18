@@ -367,7 +367,7 @@ struct PresetsDataSource {
         // Preset II
         attributes = .float
         attributes.windowLevel = .normal
-        attributes.position = .bottom
+        attributes.position = .top
         attributes.displayDuration = .infinity
         
         attributes.entranceAnimation = .init(translate: .init(duration: 0.5, spring: .init(damping: 0.8, initialVelocity: 0)))
